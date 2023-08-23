@@ -193,16 +193,21 @@ ul {
     flex-direction: row;
     justify-content: space-between;
 }
+@media (min-whidth: 576px){
+  {
+  .form-switch: 1.5rem; 
+} 
+}
 
 
 .btn {
-    --bs-btn-padding-x: 0.75rem;
+    --bs-btn-padding-x: -0.25rem;
     --bs-btn-padding-y: 0.375rem;
     --bs-btn-font-family: ;
     --bs-btn-font-size: 0.8rem;
     --bs-btn-font-weight: 397;
     --bs-btn-line-height: -0.5px;
-    --bs-btn-color: #5a26b6;;
+    --bs-btn-color: #5a26b6;
     --bs-btn-bg: transparent;
     --bs-btn-border-width: 1px;
     --bs-btn-border-color: transparent;
@@ -343,8 +348,8 @@ footer
 
 .container
 {
- margin-left: 4em;
- height: 4em;
+ 
+ height: 5em;
 
 
 }
