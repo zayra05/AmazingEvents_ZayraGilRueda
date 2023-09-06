@@ -231,11 +231,7 @@ ul {
   }
   
 }
-@media (min-whidth: 576px){
-  .btn {
-    
- } 
-}
+
 .btn:hover {
   color:rgb(180, 35, 199);
   background-color:#713eca4b;
@@ -309,20 +305,20 @@ li:first-child
 
 footer
 {
-  padding-bottom: 5vh; 
+  margin: 1em; 
   background-color: rgba(101, 54, 142, 0.111);
  
 }
 
 .content
 {
-  height: 30vh;
+ /*  height: 2vh; */
   background-color: lightgray; 
 }
 
 .container
 {
- height: 5em;
+ height: 12em;
 
 }
 
@@ -336,13 +332,13 @@ ul{
     flex-direction: row;  
 }
 
-@media (max-width: 768px) 
+ @media (max-width: 768px) 
 {
   li
   {
-    margin-left: 0;
+    margin-left: 1em;
 
   }
   
-}
+} 
 
