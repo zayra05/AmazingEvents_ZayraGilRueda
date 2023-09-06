@@ -34,7 +34,7 @@ function mostrarEventos(arreglo, contenedor)
                                     <h5 class="card-title">${event.name} </h5>
                                     <p class="card-text">${event.description}</p>
                                     <a href="#" class="btn btn-primary">$${event.price}</a>
-                                    <a href="./details.html" id="${event._id}" class="btn btn-secundary">Details</a>
+                                    <a href="./details.html?id=${event._id}" id="${event._id}" class="btn btn-secundary">Details</a>
                                 </div>
                             </div>
                         </div> ` ;
@@ -69,7 +69,7 @@ document.addEventListener('input', e => {
         let idCheck = e.target.value;
         let indiceCat = categorias.findIndex(categoria => categoria.id == idCheck);
         categorias[indiceCat].checked= e.target.checked;
-        //console.log(checkCat);
+        
     }
 });
 checkCat.forEach(input => {
@@ -91,15 +91,7 @@ form.addEventListener('submit', e => {
     console.log(textoIngresado); 
     let arrayPalabras = textoIngresado.split (' ');
     console.log(arrayPalabras); 
-    /* for(let evento of arrayEventos){
-        let nuevoEvento={
-            id: events[ events.length - 1 ].id + 1,
-            texto: evento,
-
-        };
-        events.push(nuevoEvento);
-    } 
-    form.reset(); */
+    
 });   
 buscador.addEventListener('input', () => {
     let busqueda = buscador.value;
