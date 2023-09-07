@@ -288,11 +288,14 @@ ul {
     flex-wrap: wrap;
     margin-top: 5vh;
     margin-left: 5vh;
-    justify-content: flex-start;
+    justify-content: end;
   }
   img{
     margin-top: 10px;
   }
+  .g-3 {
+    --bs-gutter-y: 3rem;
+}
   
  
 /*footer*/
@@ -334,6 +337,9 @@ footer
 ul{
     display: flex;
     flex-direction: row;  
+}
+.col-3{
+  width: 100%;
 }
 
  @media (max-width: 768px) 

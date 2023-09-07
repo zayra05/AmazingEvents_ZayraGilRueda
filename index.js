@@ -85,14 +85,14 @@ checkCat.forEach(input => {
     });
 });
 
-form.addEventListener('submit', e => {
+/* form.addEventListener('submit', e => {
     e.preventDefault();
     let textoIngresado = buscador.value;
     console.log(textoIngresado); 
     let arrayPalabras = textoIngresado.split (' ');
     console.log(arrayPalabras); 
     
-});   
+});  */  
 buscador.addEventListener('input', () => {
     let busqueda = buscador.value;
     let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
