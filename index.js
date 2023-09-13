@@ -1,5 +1,7 @@
+let apiurl='https://mindhub-xj03.onrender.com/api/amazing';
+let eventos =[];
 
-import {data} from './data.js';
+
 
 let contenedorCards = document.getElementById('contenedorCards');
 let contenedorCheckbox = document.getElementById('contenedorCheckbox');
@@ -7,7 +9,23 @@ let categorias= new Array ();
 let buscador = document.querySelector('input[name=buscador]');
 let form = document.querySelector('form'); 
 
-
+async function getEventsdata()
+{
+    try
+    { 
+        const respuesta = await fetch (apiurl);
+        const dataJson = await respuesta.json();
+        for(const event of dataJson.events)
+        {
+            eventos.push(event);
+        }
+        console.log(eventos);
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
+}
 function obtenerCategorias(arreglo)
 {
     arreglo.forEach(function (event, i){
@@ -56,8 +74,9 @@ function mostrarCategorias(arreglo, contenedor){
     });   
     contenedor.innerHTML = checkbox;
 }
-mostrarEventos(data.events, contenedorCards);
-obtenerCategorias(data.events);
+await getEventsdata();
+mostrarEventos(eventos, contenedorCards);
+obtenerCategorias(eventos);
 mostrarCategorias(categorias, contenedorCheckbox);
 
 

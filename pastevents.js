@@ -1,48 +1,47 @@
 
-import {data} from './data.js';
+let apiurl='https://mindhub-xj03.onrender.com/api/amazing';
+let eventos =[];
+
+
   
 let contenedorCards = document.getElementById('contenedorCards');
 let contenedorCheckbox = document.getElementById('contenedorCheckbox');
 let categorias= new Array ();
 let buscador = document.querySelector('input[name=buscador]');
 let form = document.querySelector('form'); 
-mostrarEventos(data.events, contenedorCards);
-obtenerCategorias(data.events);
-mostrarCategorias(categorias, contenedorCheckbox);
 
-let checkCat = document.querySelectorAll('.form-check-input');
-document.addEventListener('input', e => { 
-    if (e.target.classList.contains('form-check-input')){
-        let idCheck = e.target.value;
-        let indiceCat = categorias.findIndex(categoria => categoria.id == idCheck);
-        categorias[indiceCat].checked= e.target.checked;
+async function getEventsdata()
+
+{
+    try
+    { 
+        const respuesta = await fetch (apiurl);
+        const dataJson = await respuesta.json();
+        for(const event of dataJson.events)
+        {
+            eventos.push(event);
+        }
+        console.log(eventos);
     }
-});
-checkCat.forEach(input => {
-    input.addEventListener('change', () => {
-        let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
-        console.log(catTrue);
-        if (catTrue.length > 0){
-            let filtrados = data.events.filter(evento => catTrue.includes(evento.category));
-            console.log(filtrados);
-            mostrarEventos(filtrados, contenedorCards);
+    catch (error)
+    {
+        console.log(error);
+    }
+}
+function obtenerCategorias(arreglo)
+{
+    arreglo.forEach(function (event, i){
+        if (!categorias.some(cat => cat.texto === event.category)) 
+        {
+            let categoria = {
+                id: i,
+                texto: event.category,
+                checked: true
+            };
+            categorias.push (categoria);
         }
     });
-});
-buscador.addEventListener('input', () => {
-    let busqueda = buscador.value;
-    let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
-    if(catTrue.length > 0){
-        let filtradosCat = data.events.filter(evento => catTrue.includes(evento.category));
-        let filtrados = filtradosCat.filter(evento => evento.description.toLowerCase().includes(busqueda.toLowerCase()) ||  evento.name.toLowerCase().includes(busqueda.toLowerCase()));
-        mostrarEventos(filtrados, contenedorCards);
-        if(filtrados.length == 0){
-            alert("Su búsqueda no trajo resultados");
-        }
-        
-    }
-}) 
-
+}
 function mostrarEventos(arreglo, contenedor)
 {
     let eventcard = ""
@@ -79,18 +78,48 @@ function mostrarCategorias(arreglo, contenedor){
     });   
     contenedor.innerHTML = checkbox;
 }
-function obtenerCategorias(arreglo)
-{
-    arreglo.forEach(function (event, i){
-        if (!categorias.some(cat => cat.texto === event.category)) 
-        {
-            let categoria = {
-                id: i,
-                texto: event.category,
-                checked: true
-            };
-            categorias.push (categoria);
+await getEventsdata();
+mostrarEventos(eventos, contenedorCards);
+obtenerCategorias(eventos);
+mostrarCategorias(categorias, contenedorCheckbox);
+
+
+let checkCat = document.querySelectorAll('.form-check-input');
+document.addEventListener('input', e => { 
+    if (e.target.classList.contains('form-check-input')){
+        let idCheck = e.target.value;
+        let indiceCat = categorias.findIndex(categoria => categoria.id == idCheck);
+        categorias[indiceCat].checked= e.target.checked;
+    }
+});
+checkCat.forEach(input => {
+    input.addEventListener('change', () => {
+        let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
+        console.log(catTrue);
+        if (catTrue.length > 0){
+            let filtrados = data.events.filter(evento => catTrue.includes(evento.category));
+            console.log(filtrados);
+            mostrarEventos(filtrados, contenedorCards);
         }
     });
-}
+});
+buscador.addEventListener('input', () => {
+    let busqueda = buscador.value;
+    let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
+    if(catTrue.length > 0){
+        let filtradosCat = data.events.filter(evento => catTrue.includes(evento.category));
+        let filtrados = filtradosCat.filter(evento => evento.description.toLowerCase().includes(busqueda.toLowerCase()) ||  evento.name.toLowerCase().includes(busqueda.toLowerCase()));
+        mostrarEventos(filtrados, contenedorCards);
+        if(filtrados.length == 0){
+            alert("Su búsqueda no trajo resultados");
+        }
+        
+    }
+}) 
+
+
+
+
+
+
 
