@@ -1,6 +1,7 @@
 
 let apiurl='https://mindhub-xj03.onrender.com/api/amazing';
 let eventos =[];
+let currentDate = "2023-01-01";
 
 
   
@@ -46,7 +47,7 @@ function mostrarEventos(arreglo, contenedor)
 {
     let eventcard = ""
     for (let event of arreglo) { 
-        if ( event.date < data.currentDate ){ 
+        if ( event.date < currentDate ){ 
             eventcard += `<div class="col-12 col-sm-6 col-md-4 col-xl-3">
                             <div class="card" >
                                 <img src="${event.image}" class="card-img1" alt="${event.image}">
@@ -97,7 +98,7 @@ checkCat.forEach(input => {
         let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
         console.log(catTrue);
         if (catTrue.length > 0){
-            let filtrados = data.events.filter(evento => catTrue.includes(evento.category));
+            let filtrados = eventos.filter(evento => catTrue.includes(evento.category));
             console.log(filtrados);
             mostrarEventos(filtrados, contenedorCards);
         }
@@ -107,7 +108,7 @@ buscador.addEventListener('input', () => {
     let busqueda = buscador.value;
     let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
     if(catTrue.length > 0){
-        let filtradosCat = data.events.filter(evento => catTrue.includes(evento.category));
+        let filtradosCat = eventos.filter(evento => catTrue.includes(evento.category));
         let filtrados = filtradosCat.filter(evento => evento.description.toLowerCase().includes(busqueda.toLowerCase()) ||  evento.name.toLowerCase().includes(busqueda.toLowerCase()));
         mostrarEventos(filtrados, contenedorCards);
         if(filtrados.length == 0){

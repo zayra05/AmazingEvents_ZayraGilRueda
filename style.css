@@ -297,7 +297,11 @@ ul {
     --bs-gutter-y: 3rem;
 }
   
- 
+ /*stats*/
+ .table>thead {
+  text-align: center;
+ }
+
 /*footer*/
 li
 {
