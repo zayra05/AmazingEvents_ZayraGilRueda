@@ -1,17 +1,34 @@
-import {data} from './data.js';
 
+let apiurl='https://mindhub-xj03.onrender.com/api/amazing';
 let queryString = location.search;
 let params = new URLSearchParams (queryString);
 let URLid = params.get("id");
+let eventos = [];
 let contenedorDetalle = document.getElementById('contenedorDetalle');
 console.log(URLid);
+await getEventsData();
+mostrarDetails (eventos, contenedorDetalle) ;
 
-mostrarDetails (data.events, contenedorDetalle) ;
-
-
+async function getEventsData()
+{
+    try
+    { 
+        const respuesta = await fetch (apiurl);
+        const dataJson = await respuesta.json();
+        for(const event of dataJson.events)
+        {
+            eventos.push(event);
+        }
+        console.log(eventos);
+    }
+    catch (error)
+    {
+        console.log(error);
+    }
+}
 function mostrarDetails (arreglo, contenedor) 
 {
-    let event = arreglo.filter(evento => evento._id.toLowerCase() == URLid.toLocaleLowerCase());
+    let event = arreglo.filter(evento => evento._id == URLid.toLocaleLowerCase());
     console.log(event);
     let detailsCard = 
     `<div class="card mb-3" >

@@ -9,6 +9,14 @@ let categorias= new Array ();
 let buscador = document.querySelector('input[name=buscador]');
 let form = document.querySelector('form'); 
 
+let checkCatL = document.querySelectorAll('.form-check-label');
+
+await getEventsdata();
+obtenerCategorias(eventos);
+mostrarCategorias(categorias, contenedorCheckbox);
+mostrarEventos(eventos, contenedorCards);
+
+
 async function getEventsdata()
 {
     try
@@ -34,7 +42,7 @@ function obtenerCategorias(arreglo)
             let categoria = {
                 id: i,
                 texto: event.category,
-                checked: true
+                checked: false
             };
             categorias.push (categoria);
         }
@@ -65,7 +73,7 @@ function mostrarCategorias(arreglo, contenedor){
        checkbox += `<div class="col">
                         <div class="switch-cat">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" value=${categoria.id} checked=${categoria.checked} role="switch" id="switch${categoria.id}">
+                            <input class="form-check-input" type="checkbox"  value=${categoria.id} role="switch" id="switch${categoria.id}">
                             <label class="form-check-label" for="switch${categoria.id}">${categoria.texto}</label>
                         </div> 
                         </div> 
@@ -74,56 +82,81 @@ function mostrarCategorias(arreglo, contenedor){
     });   
     contenedor.innerHTML = checkbox;
 }
-await getEventsdata();
-mostrarEventos(eventos, contenedorCards);
-obtenerCategorias(eventos);
-mostrarCategorias(categorias, contenedorCheckbox);
-
 
 
 let checkCat = document.querySelectorAll('.form-check-input');
-let checkCatL = document.querySelectorAll('.form-check-label');
 document.addEventListener('input', e => { 
     if (e.target.classList.contains('form-check-input')){
         let idCheck = e.target.value;
         let indiceCat = categorias.findIndex(categoria => categoria.id == idCheck);
         categorias[indiceCat].checked= e.target.checked;
-        
     }
 });
 checkCat.forEach(input => {
-
     input.addEventListener('change', () => {
         let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
+        let busca = document.getElementById("searchTxt").value;
+        let filtrados;
         if (catTrue.length > 0){
-            let filtrados = data.events.filter(evento => catTrue.includes(evento.category));
+            if(busca == ''){
+                filtrados = eventos.filter(evento => catTrue.includes(evento.category));
+            }
+            else{
+                let filtradosEventosCat = eventos.filter(evento => catTrue.includes(evento.category));
+                filtrados = filtradosEventosCat.filter(evento => evento.description.toLowerCase().includes(busca.toLowerCase()) ||  evento.name.toLowerCase().includes(busca.toLowerCase()));
+            }
             mostrarEventos(filtrados, contenedorCards);
+            if(filtrados.length == 0){
+                MostrarMensaje(true);
+            }
+            else{
+                MostrarMensaje(false);
+            }
         }
-       
-
+        else{
+            busca = document.getElementById("searchTxt").value;
+            if(busca != ''){
+                filtrados = eventos.filter(evento => evento.description.toLowerCase().includes(busca.toLowerCase()) ||  evento.name.toLowerCase().includes(busca.toLowerCase()));
+            }
+            mostrarEventos(eventos, contenedorCards);
+        }
     });
 });
-
-/* form.addEventListener('submit', e => {
-    e.preventDefault();
-    let textoIngresado = buscador.value;
-    console.log(textoIngresado); 
-    let arrayPalabras = textoIngresado.split (' ');
-    console.log(arrayPalabras); 
-    
-});  */  
 buscador.addEventListener('input', () => {
     let busqueda = buscador.value;
     let catTrue = categorias.filter(cat => cat.checked).map(x => x.texto);
     if(catTrue.length > 0){
-        let filtradosCat = data.events.filter(evento => catTrue.includes(evento.category));
-        let filtrados = filtradosCat.filter(evento => evento.description.toLowerCase().includes(busqueda.toLowerCase()) ||  evento.name.toLowerCase().includes(busqueda.toLowerCase()));
+        let filtradosEventosCat = eventos.filter(evento => catTrue.includes(evento.category));
+        let filtrados = filtradosEventosCat.filter(evento => evento.description.toLowerCase().includes(busqueda.toLowerCase()) ||  evento.name.toLowerCase().includes(busqueda.toLowerCase()));
         mostrarEventos(filtrados, contenedorCards);
         if(filtrados.length == 0){
-            alert("Su búsqueda no trajo resultados");
+            MostrarMensaje(true);
+        }
+        else{
+            MostrarMensaje(false);
         }
         
+        
+    }
+    else{
+        if(busca != ''){
+            filtrados = eventos.filter(evento => evento.description.toLowerCase().includes(busca.toLowerCase()) ||  evento.name.toLowerCase().includes(busca.toLowerCase()));
+        }
+        mostrarEventos(filtrados, contenedorCards);
+        if(filtrados.length == 0){
+            MostrarMensaje(true);
+        }
+        else{
+            MostrarMensaje(false);
+        }
     }
 }) 
-  
 
+function MostrarMensaje(mostrar){
+    var x = document.getElementById("myDIV");
+    if (mostrar) {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+}
